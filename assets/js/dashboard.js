@@ -41,6 +41,9 @@ function loadScores() {
         scoreCell.textContent = `${score.score} / ${score.totalQuestions}`;
         row.appendChild(scoreCell);
         
+        if (score.score === score.totalQuestions) {
+            scoreCell.setAttribute('data-perfect', 'true');
+        }
         // Time taken cell
         const timeCell = document.createElement('td');
         if (score.duration !== undefined) {
