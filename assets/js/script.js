@@ -30,6 +30,99 @@ const sampleQuizzes = [
                 correctAnswer: '22'
             }
         ]
+    },
+    {
+        id: 'htmlbasics',
+        title: 'HTML Basics',
+        questions: [
+            {
+                text: 'What does HTML stand for?',
+                options: ['HyperText Markup Language', 'HighText Machine Language', 'Hyperlink and Text Markup Language', 'Home Tool Markup Language'],
+                correctAnswer: 'HyperText Markup Language'
+            },
+            {
+                text: 'Which tag is used for the largest heading?',
+                options: ['<h6>', '<heading>', '<h1>', '<head>'],
+                correctAnswer: '<h1>'
+            },
+            {
+                text: 'What tag is used to define an unordered list?',
+                options: ['<ol>', '<li>', '<ul>', '<list>'],
+                correctAnswer: '<ul>'
+            },
+            {
+                text: 'Which attribute is used to specify a unique identifier for an HTML element?',
+                options: ['class', 'id', 'name', 'src'],
+                correctAnswer: 'id'
+            },
+            {
+                text: 'Which HTML element is used to create a form?',
+                options: ['<input>', '<form>', '<section>', '<fieldset>'],
+                correctAnswer: '<form>'
+            }
+        ]
+    },
+    {
+        id: 'cssbasics',
+        title: 'CSS Basics',
+        questions: [
+            {
+                text: 'What does CSS stand for?',
+                options: ['Cascading Style Sheets', 'Creative Style Sheets', 'Computer Style Sheets', 'Colorful Style Sheets'],
+                correctAnswer: 'Cascading Style Sheets'
+            },
+            {
+                text: 'Which property is used to change the background color?',
+                options: ['color', 'bgcolor', 'background-color', 'background'],
+                correctAnswer: 'background-color'
+            },
+            {
+                text: 'Which CSS property controls the text size?',
+                options: ['text-size', 'font-size', 'text-style', 'font-style'],
+                correctAnswer: 'font-size'
+            },
+            {
+                text: 'Which CSS selector selects elements with a specific class attribute?',
+                options: ['.class', '#class', '*class', '@class'],
+                correctAnswer: '.class'
+            },
+            {
+                text: 'Which property is used to create space between elements?',
+                options: ['spacing', 'margin', 'padding', 'border'],
+                correctAnswer: 'margin'
+            }
+        ]
+    },
+    {
+        id: 'pythonbasics',
+        title: 'Python Basics',
+        questions: [
+            {
+                text: 'What symbol is used for comments in Python?',
+                options: ['//', '/*', '#', '<!--'],
+                correctAnswer: '#'
+            },
+            {
+                text: 'Which of these is NOT a Python data type?',
+                options: ['int', 'float', 'char', 'bool'],
+                correctAnswer: 'char'
+            },
+            {
+                text: 'How do you create a list in Python?',
+                options: ['(1, 2, 3)', '[1, 2, 3]', '{1, 2, 3}', '<1, 2, 3>'],
+                correctAnswer: '[1, 2, 3]'
+            },
+            {
+                text: 'Which method is used to add an item to a list?',
+                options: ['add()', 'append()', 'insert()', 'extend()'],
+                correctAnswer: 'append()'
+            },
+            {
+                text: 'What is the correct way to create a function in Python?',
+                options: ['function myFunc():', 'def myFunc():', 'create myFunc():', 'func myFunc():'],
+                correctAnswer: 'def myFunc():'
+            }
+        ]
     }
 ];
 
