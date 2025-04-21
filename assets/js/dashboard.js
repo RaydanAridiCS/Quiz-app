@@ -15,7 +15,7 @@ function loadScores() {
     scoresTableBody.innerHTML = '';
 
     if (scores.length === 0) {
-        scoresTableBody.innerHTML = '<tr><td colspan="5">No scores recorded yet.</td></tr>';
+        scoresTableBody.innerHTML = '<tr><td colspan="6">No scores recorded yet.</td></tr>';
         return;
     }
 
@@ -44,6 +44,7 @@ function loadScores() {
         if (score.score === score.totalQuestions) {
             scoreCell.setAttribute('data-perfect', 'true');
         }
+        
         // Time taken cell
         const timeCell = document.createElement('td');
         if (score.duration !== undefined) {
@@ -64,6 +65,16 @@ function loadScores() {
             dateCell.textContent = 'N/A';
         }
         row.appendChild(dateCell);
+        
+        // Difficulty cell
+        const difficultyCell = document.createElement('td');
+        if (score.difficulty) {
+            difficultyCell.textContent = score.difficulty === 'all' ? 'All Levels' : score.difficulty;
+            difficultyCell.setAttribute('data-difficulty', score.difficulty);
+        } else {
+            difficultyCell.textContent = 'N/A';
+        }
+        row.appendChild(difficultyCell);
 
         scoresTableBody.appendChild(row);
     });

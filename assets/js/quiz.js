@@ -4,12 +4,16 @@ const quizFormElement = document.getElementById('quiz-form');
 const submitButton = document.getElementById('submit-quiz');
 const resultsElement = document.getElementById('quiz-results');
 const backHomeButton = document.getElementById('back-home');
+const difficultyDisplay = document.createElement('div');
+difficultyDisplay.id = 'difficulty-display';
+difficultyDisplay.classList.add('difficulty-display');
 
 // Add timer element
 const timerElement = document.createElement('div');
 timerElement.id = 'quiz-timer';
 timerElement.classList.add('quiz-timer');
 document.querySelector('.quiz-container').insertBefore(timerElement, quizTitleElement);
+document.querySelector('.quiz-container').insertBefore(difficultyDisplay, timerElement);
 
 // Global variables 
 let currentQuiz = null;
@@ -17,6 +21,7 @@ let loggedInUser = null;
 let timerInterval = null;
 let timeLeft = 90; 
 let quizStartTime = null; 
+let selectedDifficulty = 'all';
 
 // Timer Functions 
 function startTimer() {
@@ -49,6 +54,11 @@ function updateTimerDisplay() {
 // Load Quiz Data 
 function loadQuiz() {
     const quizId = sessionStorage.getItem('quiz_selectedQuizId');
+    
+    selectedDifficulty = localStorage.getItem('quiz_preferred_difficulty') || 
+                        sessionStorage.getItem('quiz_selectedDifficulty') || 
+                        'all';
+    
     if (!quizId) {
         alert('No quiz selected!');
         window.location.href = 'home.html';
@@ -64,8 +74,41 @@ function loadQuiz() {
         return;
     }
 
+    // Set timer based on difficulty
+    if (selectedDifficulty === 'easy') {
+        timeLeft = 120; 
+    } else if (selectedDifficulty === 'medium') {
+        timeLeft = 90;  
+    } else if (selectedDifficulty === 'hard') {
+        timeLeft = 60;  
+    } else if (selectedDifficulty === 'all') {
+        timeLeft = 180;
+    }
+
+    // Display difficulty
+    updateDifficultyDisplay();
+    
     displayQuiz();
     startTimer();
+}
+
+function updateDifficultyDisplay() {
+    let difficultyText = 'All Levels';
+    let difficultyClass = 'all-difficulty';
+    
+    if (selectedDifficulty === 'easy') {
+        difficultyText = 'Easy';
+        difficultyClass = 'easy-difficulty';
+    } else if (selectedDifficulty === 'medium') {
+        difficultyText = 'Medium';
+        difficultyClass = 'medium-difficulty';
+    } else if (selectedDifficulty === 'hard') {
+        difficultyText = 'Hard';
+        difficultyClass = 'hard-difficulty';
+    }
+    
+    difficultyDisplay.textContent = `Difficulty: ${difficultyText}`;
+    difficultyDisplay.className = 'difficulty-display ' + difficultyClass;
 }
 
 // Display Quiz Questions 
@@ -74,9 +117,21 @@ function displayQuiz() {
     
     quizFormElement.innerHTML = ''; 
 
-    currentQuiz.questions.forEach((question, index) => {
+    // Filter questions by difficulty if not 'all'
+    let questionsToDisplay = currentQuiz.questions;
+    if (selectedDifficulty !== 'all') {
+        questionsToDisplay = currentQuiz.questions.filter(q => q.difficulty === selectedDifficulty);
+        
+        if (questionsToDisplay.length === 0) {
+            questionsToDisplay = currentQuiz.questions;
+            console.warn(`No questions found for difficulty: ${selectedDifficulty}. Showing all questions.`);
+        }
+    }
+
+    questionsToDisplay.forEach((question, index) => {
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question-block');
+        questionDiv.dataset.difficulty = question.difficulty || 'medium'; 
 
         const questionText = document.createElement('p');
         questionText.classList.add('question-text');
@@ -119,7 +174,18 @@ function endQuiz(isTimeout) {
     let score = 0;
     let answeredCount = 0;
     
-    currentQuiz.questions.forEach((question, index) => {
+    // Filter questions by difficulty if not 'all'
+    let questionsToCheck = currentQuiz.questions;
+    if (selectedDifficulty !== 'all') {
+        questionsToCheck = currentQuiz.questions.filter(q => q.difficulty === selectedDifficulty);
+        
+        // If no questions match the difficulty (for backward compatibility)
+        if (questionsToCheck.length === 0) {
+            questionsToCheck = currentQuiz.questions;
+        }
+    }
+    
+    questionsToCheck.forEach((question, index) => {
         const selectedOption = quizFormElement.querySelector(`input[name="question-${index}"]:checked`);
         if (selectedOption) {
             answeredCount++;
@@ -129,7 +195,7 @@ function endQuiz(isTimeout) {
         }
     });
     
-    const totalQuestions = currentQuiz.questions.length;
+    const totalQuestions = questionsToCheck.length;
     const percentage = ((score / totalQuestions) * 100).toFixed(1);
     
     // Display results with timeout message if applicable
@@ -138,15 +204,16 @@ function endQuiz(isTimeout) {
         resultMessage += `<p class="timeout-message">Time's up! You answered ${answeredCount} out of ${totalQuestions} questions.</p>`;
     }
     resultMessage += `<p>You scored ${score} out of ${totalQuestions} (${percentage}%)</p>`;
+    resultMessage += `<p>Difficulty: ${selectedDifficulty === 'all' ? 'All Levels' : selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1)}</p>`;
     
     resultsElement.innerHTML = resultMessage;
     resultsElement.style.display = 'block';
     submitButton.style.display = 'none';
     quizFormElement.style.display = 'none';
-    backHomeButton.style.display = 'inline-block';
+    backHomeButton.style.display = 'block';
     
     // Save score to localStorage
-    saveScore(loggedInUser.username, currentQuiz.id, currentQuiz.title, score, totalQuestions);
+    saveScore(loggedInUser.username, currentQuiz.id, currentQuiz.title, score, totalQuestions, selectedDifficulty);
 }
 
 //  Handle Quiz Submission 
@@ -162,7 +229,7 @@ submitButton.addEventListener('click', (e) => {
 });
 
 // Save Score 
-function saveScore(username, quizId, quizTitle, score, totalQuestions) {
+function saveScore(username, quizId, quizTitle, score, totalQuestions, difficulty) {
     const scores = JSON.parse(localStorage.getItem('quiz_scores')) || [];
     
     const endTime = new Date();
@@ -177,7 +244,8 @@ function saveScore(username, quizId, quizTitle, score, totalQuestions) {
         totalQuestions: totalQuestions,
         timestamp: endTime.toISOString(),
         duration: durationSeconds,
-        remainingTime: remainingTime
+        remainingTime: remainingTime,
+        difficulty: difficulty
     };
 
     scores.push(newScore);

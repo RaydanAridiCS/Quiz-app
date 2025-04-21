@@ -88,7 +88,7 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
     const newUser = {
         username: username,
         password: password,
-        isAdmin: username.includes('admin') // Simple admin check
+        isAdmin: username.includes('admin') 
     };
     
     // Add user to localStorage

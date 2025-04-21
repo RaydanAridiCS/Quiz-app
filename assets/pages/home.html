@@ -13,6 +13,17 @@
     <div class="main-container">
         <h1>Welcome, <span id="username">User</span>!</h1>
         <h2>Available Quizzes</h2>
+        
+        <div class="difficulty-container">
+            <label for="difficulty-selector">Select Difficulty:</label>
+            <select id="difficulty-selector">
+                <option value="all">All Levels</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        
         <ul id="quiz-list">
             <!-- Quiz list will be displayed here-->
             <li>Loading quizzes...</li>
