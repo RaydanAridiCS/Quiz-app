@@ -18,6 +18,8 @@ An interactive quiz application built with vanilla HTML, CSS, and JavaScript, al
     * Each question has at least 3 options and one correct answer.
     * Users can select answers and submit.
     * After submission, the score is displayed and saved in `localStorage` for the user.
+    * **Dark Mode:** Offers a toggleable dark theme for improved user experience in low-light environments.
+    * **Timer:** Each quiz has a 90-second time limit.
 * **Dashboard Page (Admin Only):**
     * Pulls data from `localStorage`.
     * Displays all registered users and their scores.
@@ -34,9 +36,10 @@ An interactive quiz application built with vanilla HTML, CSS, and JavaScript, al
 2.  You will be directed to the Authentication Page where you can either log in if you have existing credentials in `localStorage` or register a new account.
 3.  If you log in as the hardcoded admin user (`admin@quiz.com` / `admin123`), you will be redirected to the Dashboard.
 4.  After successful login (as a regular user), you will be taken to the Home Page, where you can see a list of available quizzes.
-5.  Click on a quiz to start it. You will be presented with 3 multiple-choice questions.
-6.  Select your answers and click the submit button. Your score will be displayed and saved.
-7.  The Dashboard (accessible only by the admin user) will show a list of all registered users and their recorded quiz scores.
+5.  Click on a quiz to start it. You will be presented with 3 multiple-choice questions and a 90-second timer will begin.
+6.  Select your answers and click the submit button before the timer runs out. Your score will be displayed and saved.
+7.  The application includes a toggle to switch between light and dark mode. Look for a button or icon (e.g., a moon or sun icon) to activate it.
+8.  The Dashboard (accessible only by the admin user) will show a list of all registered users and their recorded quiz scores.
 
 ## Installation
 
@@ -49,5 +52,6 @@ The application utilizes `localStorage` in the browser to store:
 * User credentials
 * Quiz data (questions, options, correct answers)
 * User scores
+* User's preferred theme (for dark mode)
 
-**Note:** Clearing your browser's `localStorage` will reset the application's data.
+**Note:** Clearing your browser's `localStorage` will reset the application's data and theme preference.
