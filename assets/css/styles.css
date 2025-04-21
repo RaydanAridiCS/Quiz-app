@@ -161,3 +161,115 @@ button[type="submit"]:hover {
     margin-top: 10px;
     min-height: 1em;
 }
+
+/* Basic style */
+.main-container ul, .quiz-container ul, .dashboard-container table {
+    list-style: none;
+    padding: 0;
+}
+
+.main-container li, .quiz-container li {
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid var(--saffron);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.main-container li:hover {
+    background-color: #e9ecef;
+    border-left-color: var(--carrot-orange);
+    transform: translateX(5px);
+}
+
+/* Quiz page */
+.quiz-container {
+    max-width: 600px;
+    text-align: left;
+}
+
+#quiz-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--paynes-gray);
+}
+
+.question-block {
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    border-left: 4px solid var(--zomp);
+    border-radius: 5px;
+}
+
+.question-text {
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--paynes-gray);
+}
+
+.options-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.option-label {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-label:hover {
+    background-color: #e9ecef;
+    border-color: var(--saffron);
+}
+
+.option-label input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* radio buttons style */
+.option-label:has(input[type="radio"]:checked) {
+    background-color: rgba(67, 170, 139, 0.1); 
+    border-color: var(--zomp);
+}
+
+#quiz-results {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(144, 190, 109, 0.2);
+    border: 1px solid var(--pistachio);
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+}
+
+#quiz-results h2 {
+    margin-bottom: 10px;
+    color: var(--pistachio);
+}
+
+#submit-quiz, #back-home {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    margin-top: 20px;
+}
+
+#submit-quiz {
+    background-color: var(--pistachio);
+}
+
+#submit-quiz:hover {
+    background-color: #7da95c; 
+}

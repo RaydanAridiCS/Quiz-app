@@ -104,7 +104,7 @@ loginForm.addEventListener('submit', (e) => {
     if (user) {
         console.log('User login successful');
         sessionStorage.setItem('quiz_loggedInUser', JSON.stringify({ username: user.username, isAdmin: false }));
-        window.location.href = 'home.html'; 
+        window.location.href = 'assets/pages/home.html'; 
     } else {
         loginError.textContent = 'Invalid username or password.';
     }
