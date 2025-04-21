@@ -15,39 +15,56 @@ function loadScores() {
     scoresTableBody.innerHTML = '';
 
     if (scores.length === 0) {
-        scoresTableBody.innerHTML = '<tr><td colspan="3">No scores recorded yet.</td></tr>';
+        scoresTableBody.innerHTML = '<tr><td colspan="5">No scores recorded yet.</td></tr>';
         return;
     }
 
     // Sort scores
-    scores.sort((a, b) => {
-        if (a.username < b.username) return -1;
-        if (a.username > b.username) return 1;
-        if (a.quizTitle < b.quizTitle) return -1;
-        if (a.quizTitle > b.quizTitle) return 1;
-        return 0; 
-    });
+    scores.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
 
     scores.forEach(score => {
         const row = document.createElement('tr');
 
+        // Username cell
         const userCell = document.createElement('td');
         userCell.textContent = score.username;
         row.appendChild(userCell);
 
+        // Quiz title cell
         const quizCell = document.createElement('td');
         quizCell.textContent = score.quizTitle;
         row.appendChild(quizCell);
 
+        // Score cell
         const scoreCell = document.createElement('td');
         scoreCell.textContent = `${score.score} / ${score.totalQuestions}`;
         row.appendChild(scoreCell);
+        
+        // Time taken cell
+        const timeCell = document.createElement('td');
+        if (score.duration !== undefined) {
+            const minutes = Math.floor(score.duration / 60);
+            const seconds = score.duration % 60;
+            timeCell.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        } else {
+            timeCell.textContent = 'N/A';
+        }
+        row.appendChild(timeCell);
+        
+        // Submission time cell
+        const dateCell = document.createElement('td');
+        if (score.timestamp) {
+            const date = new Date(score.timestamp);
+            dateCell.textContent = date.toLocaleString();
+        } else {
+            dateCell.textContent = 'N/A';
+        }
+        row.appendChild(dateCell);
 
         scoresTableBody.appendChild(row);
     });
 }
-
 
 // Admin Check
 const loggedInUser = JSON.parse(sessionStorage.getItem('quiz_loggedInUser'));

@@ -16,9 +16,11 @@ let currentQuiz = null;
 let loggedInUser = null;
 let timerInterval = null;
 let timeLeft = 90; 
+let quizStartTime = null; 
 
 // Timer Functions 
 function startTimer() {
+    quizStartTime = new Date(); 
     updateTimerDisplay();
     timerInterval = setInterval(() => {
         timeLeft--;
@@ -162,13 +164,20 @@ submitButton.addEventListener('click', (e) => {
 // Save Score 
 function saveScore(username, quizId, quizTitle, score, totalQuestions) {
     const scores = JSON.parse(localStorage.getItem('quiz_scores')) || [];
+    
+    const endTime = new Date();
+    const durationSeconds = Math.floor((endTime - quizStartTime) / 1000);
+    const remainingTime = timeLeft;
+    
     const newScore = {
         username: username,
         quizId: quizId,
         quizTitle: quizTitle,
         score: score,
         totalQuestions: totalQuestions,
-        timestamp: new Date().toISOString()
+        timestamp: endTime.toISOString(),
+        duration: durationSeconds,
+        remainingTime: remainingTime
     };
 
     scores.push(newScore);
