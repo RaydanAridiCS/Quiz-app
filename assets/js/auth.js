@@ -24,6 +24,32 @@ function getUsers() {
     return users ? JSON.parse(users) : [];
 }
 
+// Function to initialize admin user if no users exist
+(function initializeUsers() {
+    const users = getUsers();
+
+    const adminExists = users.some(user => user.username === 'admin@quiz.com' && user.isAdmin === true);
+    
+    if (users.length === 0 || !adminExists) {
+
+        const adminUser = {
+            username: 'admin@quiz.com',
+            password: 'admin123',
+            isAdmin: true
+        };
+        
+        if (users.length === 0) {
+
+            localStorage.setItem('quiz_users', JSON.stringify([adminUser]));
+        } else {
+
+            users.push(adminUser);
+            localStorage.setItem('quiz_users', JSON.stringify(users));
+        }
+        console.log('Admin user created/updated.');
+    }
+})();
+
 // Handle login form submission
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -31,6 +57,9 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
     const errorElement = document.getElementById('login-error');
+    
+
+    errorElement.textContent = '';
     
     const users = getUsers();
     const user = users.find(u => u.username === username && u.password === password);
@@ -106,17 +135,3 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
         showForm('login');
     }, 2000);
 });
-
-// Initialize admin user if no users exist
-(function initializeUsers() {
-    const users = getUsers();
-    if (users.length === 0) {
-        const adminUser = {
-            username: 'admin@quiz.com',
-            password: 'admin123',
-            isAdmin: true
-        };
-        localStorage.setItem('quiz_users', JSON.stringify([adminUser]));
-        console.log('Admin user created.');
-    }
-})();
