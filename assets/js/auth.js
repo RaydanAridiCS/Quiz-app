@@ -1,111 +1,122 @@
-// DOM Elements
-const loginForm = document.getElementById('login-form');
-const registerForm = document.getElementById('register-form');
-const loginTab = document.querySelector('.tab-link[onclick*="login"]');
-const registerTab = document.querySelector('.tab-link[onclick*="register"]');
-const loginError = document.getElementById('login-error');
-const registerError = document.getElementById('register-error');
-const registerSuccess = document.getElementById('register-success');
-
-// Admin Credentials
-const ADMIN_USER = 'admin@quiz.com';
-const ADMIN_PASS = 'admin123';
-
-// Tab Switching 
-function showForm(formId) {
-    loginError.textContent = '';
-    registerError.textContent = '';
-    registerSuccess.textContent = '';
-
-    if (formId === 'login') {
+// Function to show the selected form (login or register)
+function showForm(formType) {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const loginTab = document.querySelector('.tab-link:nth-child(1)');
+    const registerTab = document.querySelector('.tab-link:nth-child(2)');
+    
+    if (formType === 'login') {
         loginForm.classList.add('active-form');
         registerForm.classList.remove('active-form');
         loginTab.classList.add('active');
         registerTab.classList.remove('active');
     } else {
-        loginForm.classList.remove('active-form');
         registerForm.classList.add('active-form');
-        loginTab.classList.remove('active');
+        loginForm.classList.remove('active-form');
         registerTab.classList.add('active');
+        loginTab.classList.remove('active');
     }
 }
 
-// LocalStorage Helper 
+// Function to get users from localStorage
 function getUsers() {
     const users = localStorage.getItem('quiz_users');
     return users ? JSON.parse(users) : [];
 }
 
-function saveUsers(users) {
-    localStorage.setItem('quiz_users', JSON.stringify(users));
-}
-
-// Registration 
-registerForm.addEventListener('submit', (e) => {
+// Handle login form submission
+document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    registerError.textContent = '';
-    registerSuccess.textContent = '';
+    
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const errorElement = document.getElementById('login-error');
+    
+    const users = getUsers();
+    const user = users.find(u => u.username === username && u.password === password);
+    
+    if (user) {
+        // Store logged in user in sessionStorage
+        sessionStorage.setItem('quiz_loggedInUser', JSON.stringify(user));
+        
+        // Redirect to home page or admin dashboard
+        if (user.isAdmin) {
+            window.location.href = 'assets/pages/dashboard.html';
+        } else {
+            window.location.href = 'assets/pages/home.html';
+        }
+    } else {
+        errorElement.textContent = 'Invalid username or password.';
+    }
+});
 
-    const username = document.getElementById('register-username').value.trim();
+// Handle register form submission
+document.getElementById('register-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('register-username').value;
     const password = document.getElementById('register-password').value;
     const confirmPassword = document.getElementById('register-confirm-password').value;
-
-    if (!username || !password || !confirmPassword) {
-        registerError.textContent = 'All fields are required.';
-        return;
-    }
-
+    const errorElement = document.getElementById('register-error');
+    const successElement = document.getElementById('register-success');
+    
+    // Reset messages
+    errorElement.textContent = '';
+    successElement.textContent = '';
+    
+    // Validate password match
     if (password !== confirmPassword) {
-        registerError.textContent = 'Passwords do not match.';
+        errorElement.textContent = 'Passwords do not match.';
         return;
     }
-
+    
+    // Validate password strength (at least 6 characters)
+    if (password.length < 6) {
+        errorElement.textContent = 'Password must be at least 6 characters long.';
+        return;
+    }
+    
     const users = getUsers();
-    const existingUser = users.find(user => user.username === username);
-
-    if (existingUser) {
-        registerError.textContent = 'Username already exists.';
+    
+    // Check if username already exists
+    if (users.some(u => u.username === username)) {
+        errorElement.textContent = 'Username already exists.';
         return;
     }
-
-    // Add new user
-    users.push({ username, password });
-    saveUsers(users);
-
-    registerSuccess.textContent = 'Registration successful! You can now log in.';
-    registerForm.reset();
+    
+    // Create new user
+    const newUser = {
+        username: username,
+        password: password,
+        isAdmin: username.includes('admin') // Simple admin check
+    };
+    
+    // Add user to localStorage
+    users.push(newUser);
+    localStorage.setItem('quiz_users', JSON.stringify(users));
+    
+    // Show success message
+    successElement.textContent = 'Registration successful! You can now login.';
+    
+    // Reset form
+    document.getElementById('register-form').reset();
+    
+    // Switch to login form after a delay
+    setTimeout(() => {
+        showForm('login');
+    }, 2000);
 });
 
-// Login 
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    loginError.textContent = '';
-
-    const username = document.getElementById('login-username').value.trim();
-    const password = document.getElementById('login-password').value;
-
-    if (!username || !password) {
-        loginError.textContent = 'Both username and password are required.';
-        return;
-    }
-
-    // Check for Admin
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-        console.log('Admin login successful');
-        sessionStorage.setItem('quiz_loggedInUser', JSON.stringify({ username: ADMIN_USER, isAdmin: true }));
-        window.location.href = 'assets/pages/dashboard.html'; 
-        return;
-    }
-
-    // Check regular users
+// Initialize admin user if no users exist
+(function initializeUsers() {
     const users = getUsers();
-    const user = users.find(u => u.username === username && u.password === password); 
-
-    if (user) {
-        console.log('User login successful');
-        sessionStorage.setItem('quiz_loggedInUser', JSON.stringify({ username: user.username, isAdmin: false }));
-        window.location.href = 'assets/pages/home.html'; 
-    } else {
-        loginError.textContent = 'Invalid username or password.';
+    if (users.length === 0) {
+        const adminUser = {
+            username: 'admin@quiz.com',
+            password: 'admin123',
+            isAdmin: true
+        };
+        localStorage.setItem('quiz_users', JSON.stringify([adminUser]));
+        console.log('Admin user created.');
     }
-});
+})();
