@@ -273,3 +273,34 @@ button[type="submit"]:hover {
 #submit-quiz:hover {
     background-color: #7da95c; 
 }
+
+/* dashboard style */
+.dashboard-container {
+    max-width: 800px; 
+}
+
+.dashboard-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container th, .dashboard-container td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.dashboard-container th {
+    background-color: var(--paynes-gray);
+    color: white;
+}
+
+.dashboard-container tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.dashboard-container tr:hover {
+    background-color: rgba(87, 117, 144, 0.1);
+}

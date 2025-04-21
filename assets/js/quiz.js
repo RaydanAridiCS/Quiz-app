@@ -20,7 +20,7 @@ let loggedInUser = null;
 // Check if user is logged in
 loggedInUser = JSON.parse(sessionStorage.getItem('quiz_loggedInUser'));
 if (!loggedInUser) {
-    window.location.href = 'index.html'; 
+    window.location.href = '../../index.html'; 
 }
 
 // Load Quiz Data

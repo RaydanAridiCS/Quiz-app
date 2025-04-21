@@ -93,7 +93,7 @@ loginForm.addEventListener('submit', (e) => {
     if (username === ADMIN_USER && password === ADMIN_PASS) {
         console.log('Admin login successful');
         sessionStorage.setItem('quiz_loggedInUser', JSON.stringify({ username: ADMIN_USER, isAdmin: true }));
-        window.location.href = 'dashboard.html'; 
+        window.location.href = 'assets/pages/dashboard.html'; 
         return;
     }
 

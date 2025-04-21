@@ -76,7 +76,7 @@ const logoutButton = document.getElementById('logout-button');
 if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         sessionStorage.removeItem('quiz_loggedInUser');
-        window.location.href = 'index.html';
+        window.location.href = '../../index.html';
     });
 }
 
