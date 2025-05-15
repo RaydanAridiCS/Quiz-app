@@ -549,17 +549,17 @@ button[type="submit"]:hover {
 }
 
 @media (max-width: 768px) {
-    .dashboard-container, .quiz-container, .main-container, .auth-container {
+    .dashboard-container, .quiz-container, .main-container {
         padding: 15px;
         margin: 10px;
-        max-width: 100%;
+        max-width: 90%;
         width: 100%;
         border-radius: 6px;
         box-sizing: border-box;
     }
 
     h1 {
-        font-size: 1em;
+        font-size: 1.6em;
         margin-bottom: 12px;
     }
 
@@ -587,7 +587,7 @@ button[type="submit"]:hover {
         padding: 0;
     }
 
-    .dashboard-container, .quiz-container, .main-container, .auth-container {
+    .dashboard-container, .quiz-container, .main-container {
         padding: 8px;
         margin: 4px;
         width: 100%;
@@ -596,7 +596,7 @@ button[type="submit"]:hover {
     }
 
     h1 {
-        font-size: 1.1em;
+        font-size: 1.4em;
         margin-bottom: 8px;
     }
 
@@ -638,4 +638,19 @@ button[type="submit"]:hover {
         padding: 5px;
         font-size: 0.8em;
     }
+}
+
+@media (max-width: 350px) {
+    body {
+        padding: 0;
+    }
+
+    .dashboard-container, .quiz-container, .main-container, .auth-container{
+        padding: 8px;
+        margin: 14px;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
 }
