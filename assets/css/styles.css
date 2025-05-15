@@ -351,7 +351,7 @@ button[type="submit"]:hover {
 
 /* dashboard style */
 .dashboard-container {
-    max-width: 800px; 
+    max-width: 1000px; 
 }
 
 .dashboard-container table {
@@ -360,18 +360,58 @@ button[type="submit"]:hover {
     margin-top: 20px;
     box-shadow: 0 2px 5px var(--shadow-color);
     color: var(--text-color-reverse);
+    table-layout: fixed; 
 }
 
 .dashboard-container th, .dashboard-container td {
     border: 1px solid var(--border-color);
     padding: 12px;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
 }
 
 .dashboard-container th {
     background-color: var(--paynes-gray);
     color: white;
     font-weight: bold;
+    padding: 15px 12px;
+    font-size: 1.05em;
+    height: auto;
+    min-height: 50px;
+    vertical-align: middle;
+}
+
+/* Column width adjustments */
+.dashboard-container th:nth-child(1),
+.dashboard-container td:nth-child(1) {
+    width: 22%;
+}
+
+.dashboard-container th:nth-child(2),
+.dashboard-container td:nth-child(2) {
+    width: 18%;
+}
+
+.dashboard-container th:nth-child(3),
+.dashboard-container td:nth-child(3) {
+    width: 10%;
+}
+
+.dashboard-container th:nth-child(4),
+.dashboard-container td:nth-child(4) {
+    width: 15%;
+}
+
+.dashboard-container th:nth-child(5),
+.dashboard-container td:nth-child(5) {
+    width: 25%;
+}
+
+.dashboard-container th:nth-child(6),
+.dashboard-container td:nth-child(6) {
+    width: 12%; 
 }
 
 .dashboard-container tr:nth-child(even) {
@@ -392,7 +432,6 @@ button[type="submit"]:hover {
     font-weight: bold;
 }
 
-/* Add styles for time taken column */
 .dashboard-container tr td:nth-child(4) {
     font-family: monospace;
     font-size: 1.1em;
@@ -507,4 +546,96 @@ button[type="submit"]:hover {
 .dashboard-container td[data-difficulty="hard"] {
     color: var(--imperial-red);
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container, .quiz-container, .main-container, .auth-container {
+        padding: 15px;
+        margin: 10px;
+        max-width: 100%;
+        width: 100%;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 1em;
+        margin-bottom: 12px;
+    }
+
+    h2 {
+        font-size: 0.8em;
+        margin-bottom: 10px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    
+    .dashboard-container table {
+        min-width: 600px;
+        font-size: 0.95em;
+    }
+
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+
+    .dashboard-container, .quiz-container, .main-container, .auth-container {
+        padding: 8px;
+        margin: 4px;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 1.1em;
+        margin-bottom: 8px;
+    }
+
+    h2 {
+        font-size: 1em;
+        margin-bottom: 8px;
+    }
+
+    .question-text {
+        font-size: 0.9em;
+    }
+
+    button {
+        padding: 7px 8px;
+        font-size: 0.8em;
+    }
+
+    .quiz-timer {
+        font-size: 0.95em;
+        padding: 6px 6px;
+    }
+
+    .form-group label {
+        font-size: 0.85em;
+    }
+
+    .form-group input {
+        padding: 6px;
+        font-size: 0.95em;
+    }
+
+    .dashboard-container table {
+        min-width: 480px;
+        font-size: 0.8em;
+    }
+
+    .dashboard-container th,
+    .dashboard-container td {
+        padding: 5px;
+        font-size: 0.8em;
+    }
 }
